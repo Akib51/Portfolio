@@ -3,7 +3,6 @@ const toggle = document.querySelector(".theme-toggle");
 const cursorLight = document.querySelector(".cursor-light");
 const contactForm = document.querySelector("#contactForm");
 const statusEl = document.querySelector(".form-status");
-const copyButtons = document.querySelectorAll(".copy-email");
 
 const OWNER_EMAIL = "akib.md.shehabuddin@g.bracu.ac.bd";
 const EMAIL_ENDPOINT = `https://formsubmit.co/ajax/${OWNER_EMAIL}`;
@@ -40,23 +39,25 @@ document.querySelectorAll("[data-reveal]").forEach((element) => {
   revealObserver.observe(element);
 });
 
-copyButtons?.forEach((button) => {
-  button.addEventListener("click", async () => {
+// Setup copy buttons with event delegation
+document.addEventListener("click", (event) => {
+  if (event.target.classList.contains("copy-email")) {
+    const button = event.target;
     const originalText = button.textContent;
-    try {
-      await navigator.clipboard.writeText(button.dataset.copy);
+    
+    navigator.clipboard.writeText(button.dataset.copy).then(() => {
       button.textContent = button.dataset.copy.includes("@") ? "Email copied" : "Number copied";
-      
       setTimeout(() => {
         button.textContent = originalText;
       }, 2000);
-    } catch (error) {
+    }).catch((error) => {
+      console.error("Failed to copy:", error);
       button.textContent = button.dataset.copy;
       setTimeout(() => {
         button.textContent = originalText;
       }, 2000);
-    }
-  });
+    });
+  }
 });
 
 contactForm?.addEventListener("submit", async (event) => {
