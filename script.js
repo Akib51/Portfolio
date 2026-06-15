@@ -3,7 +3,7 @@ const toggle = document.querySelector(".theme-toggle");
 const cursorLight = document.querySelector(".cursor-light");
 const contactForm = document.querySelector("#contactForm");
 const statusEl = document.querySelector(".form-status");
-const copyEmail = document.querySelector(".copy-email");
+const copyButtons = document.querySelectorAll(".copy-email");
 
 const OWNER_EMAIL = "akib.md.shehabuddin@g.bracu.ac.bd";
 const EMAIL_ENDPOINT = `https://formsubmit.co/ajax/${OWNER_EMAIL}`;
@@ -40,13 +40,23 @@ document.querySelectorAll("[data-reveal]").forEach((element) => {
   revealObserver.observe(element);
 });
 
-copyEmail?.addEventListener("click", async () => {
-  try {
-    await navigator.clipboard.writeText(copyEmail.dataset.copy);
-    copyEmail.textContent = "Email copied";
-  } catch (error) {
-    copyEmail.textContent = OWNER_EMAIL;
-  }
+copyButtons?.forEach((button) => {
+  button.addEventListener("click", async () => {
+    const originalText = button.textContent;
+    try {
+      await navigator.clipboard.writeText(button.dataset.copy);
+      button.textContent = button.dataset.copy.includes("@") ? "Email copied" : "Number copied";
+      
+      setTimeout(() => {
+        button.textContent = originalText;
+      }, 2000);
+    } catch (error) {
+      button.textContent = button.dataset.copy;
+      setTimeout(() => {
+        button.textContent = originalText;
+      }, 2000);
+    }
+  });
 });
 
 contactForm?.addEventListener("submit", async (event) => {
