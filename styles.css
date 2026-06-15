@@ -111,6 +111,7 @@ textarea {
 .nav-links a:hover,
 .quick-links a:hover,
 .contact-methods a:hover,
+.contact-methods button:hover,
 .site-footer a:hover {
   color: var(--teal);
 }
@@ -250,7 +251,8 @@ h3 {
 }
 
 .quick-links a,
-.contact-methods a {
+.contact-methods a,
+.contact-methods button {
   border-bottom: 1px solid var(--line);
 }
 
@@ -545,6 +547,11 @@ h3 {
   background: transparent;
   color: inherit;
   cursor: pointer;
+  transition: color 180ms ease;
+}
+
+.copy-email:hover {
+  color: var(--teal);
 }
 
 .contact-form {
